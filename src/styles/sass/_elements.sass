@@ -8,3 +8,46 @@
         display: block
         height: 3px
         background: $blue
+
+.close 
+    position: absolute
+    right: 32px
+    top: 32px
+    width: 32px
+    height: 32px
+    opacity: 0.3
+    cursor: pointer
+    transition: .2s
+    &:hover 
+        opacity: .9
+
+    &:before, 
+    &:after 
+        position: absolute
+        left: 15px
+        content: ' '
+        height: 25px
+        width: 2px
+        background-color: #333
+
+    &:before 
+        transform: rotate(45deg)
+
+    &:after 
+        transform: rotate(-45deg)
+
+
+.popup__bg
+    width: 100vw
+    height: 100vh
+    position: fixed
+    top: 0
+    left: 0
+    background: rgba(0,0,0,0.3)
+    visibility: hidden
+    opacity: 0
+    transition: .2s
+
+.active
+    visibility: visible
+    opacity: 1

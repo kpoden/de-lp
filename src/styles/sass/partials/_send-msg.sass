@@ -1,17 +1,14 @@
-.popup__bg
-    width: 100vw
-    height: 100vh
-    position: fixed
-    top: 0
-    left: 0
-    background: rgba(0,0,0,0.3)
+
     
 .send-msg
-    position: absolute
+    position: fixed
     z-index: 1000
-    top: 20%
+    top: 20vh
     left: 50%
-    transform: translate(-50%)
+    transform: translate(-50%, -150%)
+    visibility: hidden
+    opacity: 0
+    transition: .2s
       
 
     &__form
@@ -36,6 +33,7 @@
         label
             display: block
             margin-bottom: 8px
+            color: $title-blue
 
     &__title
         font-size: 20px
@@ -58,14 +56,15 @@
         box-sizing: border-box
         border-radius: 10px
         margin-bottom: 72px
-        padding: 5px 10px
+        padding: 15px 10px 10px
         font-size: 20px
         font-family: Gilroy
         letter-spacing: 0.08em
+        resize: none
 
 
     &__btn
-        background: #5A98D0
+        background: $light-blue
         box-shadow: 5px 20px 50px rgba(16, 112, 177, 0.2)
         border-radius: 10px
         font-size: 16px
@@ -73,6 +72,15 @@
         text-align: center
         letter-spacing: 0.04em
         color: #FFFFFF
+        cursor: pointer
+        transition: .2s
+        &:hover
+            background: rgba(90, 152, 208, .8)
+            box-shadow: 5px 30px 50px rgba(16, 112, 177, 0.2)
+.send-msg.active
+    visibility: visible
+    opacity: 1
+    transform: translate(-50%, 0)
 
 
 
