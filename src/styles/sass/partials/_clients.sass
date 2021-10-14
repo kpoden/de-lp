@@ -8,12 +8,17 @@
         align-items: center
         justify-content: space-between
         padding-bottom: 111px
+        +mw768
+            flex-direction: column
+            align-items: start
     &__title
         font-size: 36px
         line-height: 46px
         letter-spacing: 0.05em
         color: #FFFFFF
         width: 230px
+        +mw768
+            padding: 30px 0 30px 0
     &__subtitle
         font-size: 16px
         line-height: 26px
@@ -21,6 +26,8 @@
         color: #FFFFFF
         opacity: 0.6
         width: 60%
+        +mw768
+            width: 80%
 
 
     &__logos
@@ -56,7 +63,12 @@
 
             +mw768
                 transform: scale(0.8)
-                padding: 0
+                padding: 0 0 0 45px
+            +mw480
+                padding:  8px 0 25px 15px
+                use
+                    transform: scale(0.8)
+
     &__more
         color: #FFFFFF
         font-size: 20px

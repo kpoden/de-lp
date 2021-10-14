@@ -1,6 +1,11 @@
 .help
     display: flex
     padding-top: 192px
+    +mw979
+        flex-direction: column
+        justify-content: center
+        align-items: center
+        padding-top: 100px
 
     &__left 
 
@@ -9,8 +14,11 @@
         font-size: 36px
         line-height: 46px
         letter-spacing: 0.05em
-        width: 360px
-        margin-bottom: 136px
+        width: 350px
+        margin: 0 0 136px 0
+        +mw979
+            width: 70%
+            padding-left: 20px
 
 
 
@@ -29,9 +37,13 @@
         letter-spacing: 0.05em
         padding: 0 48px 48px
         margin: 0 50px 100px
-        transition: .2s box-shadow ease-out
+        transition: .2s all ease-out
         &:hover
             box-shadow: 5px 20px 100px rgba(16, 112, 177, 0.2)
+        +mw979
+            margin: 0 auto 100px
+            width: 320px
+            height: 550px
 
         &__img
             padding-bottom: 56px

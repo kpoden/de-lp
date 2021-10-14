@@ -3,9 +3,15 @@
     width: 100%
     height: 100%
     background: $light-blue
+    margin-top: -2px
     .wrapper
         display: flex
         align-items: center
+        +mw(1060)
+            padding-right: 50px
+        +mw768
+            flex-direction: column
+            align-items: start
 
     &__inner
         background: $help-title-blue
@@ -14,6 +20,8 @@
         margin-right: 98px
         padding: 100px 0 100px 0
     &__text
+        +mw768
+            padding-bottom: 50px
 
     &__title
         font-family: Gilroy
@@ -23,6 +31,9 @@
         color: #FFFFFF
         width: 317px
         padding-bottom: 35px
+        +mw768
+            +adaptive-font(36, 24)
+            width: 100%
 
     &__subtitle
         font-size: 16px
@@ -33,6 +44,7 @@
         width: 70%
 
     &__lets
+        position: relative
         button
             width: 220px
             height: 56px
@@ -46,5 +58,18 @@
             transition: .2s
             &:hover
                 background: rgba(90, 152, 208, .8)
+    &__line
+        position: absolute
+        top: 220px
+        right: -100px
+        height: 1px
+        opacity: .4
+        width: 150vw
+        background: #fff
+        margin-right: 98px
+        z-index: 10
+        +mw768
+            top: 150px
+            right: -100px
                 
 

@@ -15,12 +15,20 @@ main
     .wrapper
         display: flex
         align-items: center
+        +mw768
+            flex-direction: column
+            justify-content: center
+            align-items: center
         
     
         .main
         
             &__info
                 min-width: 55%
+                +mw979
+                    text-align: center
+                    width: 80vw
+
 
 
             &__title
@@ -30,6 +38,9 @@ main
                 letter-spacing: 0.04em
                 color: $title-blue
                 margin-bottom: 32px
+                +mw979
+                    +adaptive-font(64, 50)
+                    line-height: 60px
 
             &__subtitle
                 font-family: Gilroy
@@ -39,6 +50,10 @@ main
                 color: $title-blue
                 opacity: 0.6
                 margin-bottom: 70px
+                max-width: 50vw
+                +mw979
+                    max-width: 100%
+                    margin-bottom: 40px
 
 
             &__button
@@ -51,3 +66,20 @@ main
                 color: #fff
                 text-align: center
                 cursor: pointer
+                transition: .2s
+                font-size: 16px
+                &:hover
+                    background: rgba(90, 152, 208, .8)
+  
+            
+            &__illustration
+                img
+                    +mw1030
+                        +adaptive-width(688, 500)
+                    +mw979
+                        +adaptive-width(500, 400)
+                        position: relative
+                        top: 30px
+                        z-index: -1
+                    +mw600
+                        +adaptive-width(450, 250)
