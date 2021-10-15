@@ -10,6 +10,11 @@ const sendMsgForm = document.querySelector('.send-msg__form'),
         sendMsgFields = document.querySelectorAll('.send-msg__form input[type="text"]'),
         sendMsgText = document.querySelector('.send-msg__msg');
 
+    //  Class for popup windows
+    //
+    //  popup - wrapper for popup or popup itsef,
+    //  bg    - background for popup,
+    //  btn   - submit button for form
 
 class Popup {
     constructor(popup, bg, btn) {
@@ -19,12 +24,16 @@ class Popup {
         this.show.bind(this);
     }
 
+    // Show popup and background
+    // Block scroll
     show() {
         this.popup.classList.add('active');
         this.bg.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
 
+    // Close popup and background
+    // Removing old alerts and error styles
     close() {
         sendMsgForm.reset();
         const errMsg = document.querySelector('._err');
@@ -48,6 +57,13 @@ class Popup {
 
 }
 
+    //  Class for sending form
+    //
+    //  form   - form for sending,
+    //  submit - submit button for form,
+    //  fields - input fields of form NodeList (text, name, telephone, etc.)
+    //  text   - text from textarea of form
+
 class FormSend{
     constructor(form, submit, fields, text) {
         this.form = form;
@@ -61,6 +77,9 @@ class FormSend{
         })
     }
 
+
+
+        // Error alert if form has empty fields
         err() {
 
             const errAlert = document.createElement('div');
@@ -70,6 +89,8 @@ class FormSend{
 
         }
 
+
+        // Success alert if fields filled and message sent
         success() {
             const successAlert = document.createElement('div');
             successAlert.classList.add('_success');
@@ -77,6 +98,9 @@ class FormSend{
             this.form.append(successAlert);
         }
 
+
+        // Checking form for empty fields and adding error styles for empty fields
+        // Calling send function if everithing ok
         validate(fields, text) {
 
             const oldErr = document.querySelector('._err');
@@ -116,6 +140,8 @@ class FormSend{
             
         }
 
+        //Sending form fields in json format to backend
+        // Calling success if server response "ok"
         async send() {
 
             let data = {};
