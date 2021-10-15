@@ -10,7 +10,6 @@ const sendMsgForm = document.querySelector('.send-msg__form'),
         sendMsgFields = document.querySelectorAll('.send-msg__form input[type="text"]'),
         sendMsgText = document.querySelector('.send-msg__msg');
 
-        sendMsgForm.addEventListener('submit', (e) => e.preventDefault());
 
 class Popup {
     constructor(popup, bg, btn) {
@@ -27,6 +26,21 @@ class Popup {
     }
 
     close() {
+        sendMsgForm.reset();
+        const errMsg = document.querySelector('._err');
+        if(errMsg) {
+            errMsg.remove();
+        }
+        
+        const sucMsg = document.querySelector('._success');
+        if(sucMsg) {
+            sucMsg.remove();
+        }
+
+        sendMsgText.classList.remove('_req');
+            for(let i = 0; i < sendMsgFields.length; i++) {
+                sendMsgFields[i].classList.remove('_req');
+            }
         this.popup.classList.remove('active');
         this.bg.classList.remove('active');
         document.body.style.overflow = 'auto';
@@ -38,14 +52,101 @@ class FormSend{
     constructor(form, submit, fields, text) {
         this.form = form;
         this.submit = submit;
-        this.fieldset = fields;
+        this.fields = fields;
         this.text = text;
 
         this.form.addEventListener('submit', (e)=>{
             e.preventDefault();
-        });
+            this.validate(this.fields, this.text);
+        })
     }
-}
+
+        err() {
+
+            const errAlert = document.createElement('div');
+            errAlert.classList.add('_err');
+            errAlert.innerHTML = "Please fill in all the required fields.";
+            this.form.append(errAlert);
+
+        }
+
+        success() {
+            const successAlert = document.createElement('div');
+            successAlert.classList.add('_success');
+            successAlert.innerHTML = "Your message has been sent successfully!";
+            this.form.append(successAlert);
+        }
+
+        validate(fields, text) {
+
+            const oldErr = document.querySelector('._err');
+            if(oldErr) {
+                oldErr.remove();
+            }
+
+            const oldSucc = document.querySelector('._success');
+            if(oldSucc) {
+                oldSucc.remove();
+            }
+
+            text.classList.remove('_req');
+            for(let i = 0; i < fields.length; i++) {
+                fields[i].classList.remove('_req');
+            }
+            
+            let err = 0;
+
+            for(let i=0; i<fields.length; i++) {
+                if(fields[i].value === "") {
+                    fields[i].classList.add('_req');
+                    err++;
+                }
+            }
+
+            if(text.value === "") {
+                text.classList.add('_req');
+                err++;
+            }
+
+            if(err>0) {
+                this.err();
+            } else {
+                this.send();
+            }
+            
+        }
+
+        async send() {
+
+            let data = {};
+
+            for (let i = 0; i < this.fields.length; i++) {
+                const element = this.fields[i];
+    
+                data[element.id] = element.value;
+            }
+
+            data[this.text.id] = this.text.value;
+
+       
+            let response = await fetch('send-mail.php', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            if (response.ok) {
+                this.success();
+                this.form.reset();
+            } 
+        }
+        
+   
+    }
+
 
 let sendMsgPopup = new Popup(sendMsgWrap, bg, workBtn);
 
