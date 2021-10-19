@@ -1,16 +1,16 @@
 
     
 .send-msg
-    position: fixed
+    min-height: 100%
+    min-width: 100%
+    display: flex
+    align-items: center
+    justify-content: center
     z-index: 1000
-    top: 2vh
-    left: 50%
-    transform: translate(-50%, -150%)
     visibility: hidden
     opacity: 0
+    transform: translateY(-100%)
     transition: .2s
-    +mw768
-        top: 10vh
       
 
     &__form
@@ -21,6 +21,8 @@
         box-shadow: 5px 10px 50px rgba(16, 112, 177, 0.2)
         border-radius: 10px
         font-family: Gilroy
+        position: relative
+        
         +mw768
             width: 330px
             height: 500px
@@ -104,7 +106,8 @@
 .send-msg.active
     visibility: visible
     opacity: 1
-    transform: translate(-50%, 0)
+    transform: translateY(0%)
+
 
 
 

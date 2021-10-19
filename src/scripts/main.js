@@ -73,21 +73,18 @@ class FormSend{
 
         this.form.addEventListener('submit', (e)=>{
             e.preventDefault();
-            this.validate(this.fields, this.text);
+            const validateForm = new FormValidate(this.fields, this.text);
+            if (validateForm.validate()) {
+                console.log(1);
+                // this.send();
+            } else {
+                console.log(2);
+                validateForm.err();
+            }
         })
     }
 
 
-
-        // Error alert if form has empty fields
-        err() {
-
-            const errAlert = document.createElement('div');
-            errAlert.classList.add('_err');
-            errAlert.innerHTML = "Please fill in all the required fields.";
-            this.form.append(errAlert);
-
-        }
 
 
         // Success alert if fields filled and message sent
@@ -99,46 +96,6 @@ class FormSend{
         }
 
 
-        // Checking form for empty fields and adding error styles for empty fields
-        // Calling send function if everithing ok
-        validate(fields, text) {
-
-            const oldErr = document.querySelector('._err');
-            if(oldErr) {
-                oldErr.remove();
-            }
-
-            const oldSucc = document.querySelector('._success');
-            if(oldSucc) {
-                oldSucc.remove();
-            }
-
-            text.classList.remove('_req');
-            for(let i = 0; i < fields.length; i++) {
-                fields[i].classList.remove('_req');
-            }
-            
-            let err = 0;
-
-            for(let i=0; i<fields.length; i++) {
-                if(fields[i].value === "") {
-                    fields[i].classList.add('_req');
-                    err++;
-                }
-            }
-
-            if(text.value === "") {
-                text.classList.add('_req');
-                err++;
-            }
-
-            if(err>0) {
-                this.err();
-            } else {
-                this.send();
-            }
-            
-        }
 
         //Sending form fields in json format to backend
         // Calling success if server response "ok"
@@ -169,15 +126,84 @@ class FormSend{
                 this.form.reset();
             } 
         }
-        
-   
     }
+
+    class FormValidate {
+        constructor(fields, text) {
+            this.fields = fields;
+            this.text = text;
+        }
+
+        validate(fields, text) {
+
+            const oldErr = document.querySelector('._err');
+            if(oldErr) {
+                oldErr.remove();
+            }
+
+            const oldSucc = document.querySelector('._success');
+            if(oldSucc) {
+                oldSucc.remove();
+            }
+
+            this.text.classList.remove('_req');
+            for(let i = 0; i < this.fields.length; i++) {
+                this.fields[i].classList.remove('_req');
+            }
+            
+            let err = 0;
+
+            for(let i=0; i<this.fields.length; i++) {
+                if(this.fields[i].value === "") {
+                    this.fields[i].classList.add('_req');
+                    err++;
+                }
+            }
+
+            if(this.text.value === "") {
+                this.text.classList.add('_req');
+                err++;
+            }
+
+            if(err>0) {
+                return false;
+            } else {
+                return true;
+            }
+            
+        }
+
+        
+        // Error alert if form has empty fields
+        err() {
+
+            const errAlert = document.createElement('div');
+            errAlert.classList.add('_err');
+            errAlert.innerHTML = "Please fill in all the required fields.";
+            sendMsgForm.append(errAlert);
+
+        }
+
+
+     
+    }
+
 
 
 let sendMsgPopup = new Popup(sendMsgWrap, bg, workBtn);
 
+    //Open Send Us Message Popup on "Let's talk" button
 workBtn.addEventListener('click', sendMsgPopup.show.bind(sendMsgPopup));
-bg.addEventListener('click', sendMsgPopup.close.bind(sendMsgPopup));
+
+    //Close Send Us Message Popup on close-x button or its background
+bg.addEventListener('click', function(e) {
+    if(e.target.classList.contains("send-msg")){
+        sendMsgPopup.close();
+    }
+    
+});
 closeBtn.addEventListener('click', sendMsgPopup.close.bind(sendMsgPopup));
+
+    //Validate form before sending
 
 let sendMsg = new FormSend(sendMsgForm, sendMsgBtn, sendMsgFields, sendMsgText);
