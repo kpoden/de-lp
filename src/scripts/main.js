@@ -8,7 +8,9 @@ const sendMsgWrap = document.querySelector('.send-msg'),
 const sendMsgForm = document.querySelector('.send-msg__form'),
         sendMsgBtn = document.querySelector('.send-msg__btn'),
         sendMsgFields = document.querySelectorAll('.send-msg__form input[type="text"]'),
-        sendMsgText = document.querySelector('.send-msg__msg');
+        sendMsgText = document.querySelector('.send-msg__msg'),
+        successPopup = document.querySelector('.success-popup'),
+        successPopupOkBtn = document.querySelector('.success-popup__btn');
 
     //  Class for popup windows
     //
@@ -57,6 +59,16 @@ class Popup {
 
 }
 
+
+class PopupSuccess extends Popup {
+    constructor (popup, bg, btn) {
+        super(popup, bg, btn);
+
+        this.btn.addEventListener('click', super.close.bind(this));
+    }
+}
+
+
     //  Class for sending form
     //
     //  form   - form for sending,
@@ -75,11 +87,10 @@ class FormSend{
             e.preventDefault();
             const validateForm = new FormValidate(this.fields, this.text);
             if (validateForm.validate()) {
-                console.log(1);
-                // this.send();
-            } else {
-                console.log(2);
-                validateForm.err();
+                this.send();
+                sendMsgPopup.close();
+                setTimeout(()=> {successMsg.show()}, 500);
+
             }
         })
     }
@@ -151,21 +162,33 @@ class FormSend{
                 this.fields[i].classList.remove('_req');
             }
             
-            let err = 0;
+            let errType = '';
 
             for(let i=0; i<this.fields.length; i++) {
-                if(this.fields[i].value === "") {
+                if(this.fields[i].value.trim() === "") {
                     this.fields[i].classList.add('_req');
-                    err++;
+                    errType = 'fieldsErr';
+                }
+                if(this.fields[i].id === "email") {
+                   
+                    if(!this.validateEmail(this.fields[i].value)) {
+                        this.fields[i].classList.add('_req');
+                        errType = 'emailErr';
+                    }
                 }
             }
 
-            if(this.text.value === "") {
+            if(this.text.value.trim() === "") {
                 this.text.classList.add('_req');
-                err++;
+                errType = 'fieldsErr';
             }
 
-            if(err>0) {
+            if(errType) {
+                if(errType === 'fieldsErr') {
+                    this.err('fieldsErr');
+                } else if(errType === 'emailErr') {
+                    this.err('emailErr');
+                }
                 return false;
             } else {
                 return true;
@@ -175,30 +198,45 @@ class FormSend{
 
         
         // Error alert if form has empty fields
-        err() {
+        err(errType) {
 
-            const errAlert = document.createElement('div');
-            errAlert.classList.add('_err');
-            errAlert.innerHTML = "Please fill in all the required fields.";
-            sendMsgForm.append(errAlert);
+            if(errType === 'emailErr') {
+                const errAlert = document.createElement('div');
+                errAlert.classList.add('_err');
+                errAlert.innerHTML = "Please enter valid Email";
+                sendMsgForm.append(errAlert);
+
+            } else if(errType === 'fieldsErr') {
+
+                const errAlert = document.createElement('div');
+                errAlert.classList.add('_err');
+                errAlert.innerHTML = "Please fill in all the required fields.";
+                sendMsgForm.append(errAlert);
+            }
 
         }
 
+        validateEmail(email) {
+            var re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+            return re.test(email);
+        }
 
      
     }
 
 
 
-let sendMsgPopup = new Popup(sendMsgWrap, bg, workBtn);
+
+const sendMsgPopup = new Popup(sendMsgWrap, bg, workBtn);
 
     //Open Send Us Message Popup on "Let's talk" button
 workBtn.addEventListener('click', sendMsgPopup.show.bind(sendMsgPopup));
 
     //Close Send Us Message Popup on close-x button or its background
 bg.addEventListener('click', function(e) {
-    if(e.target.classList.contains("send-msg")){
+    if(e.target.classList.contains("send-msg") || e.target.classList.contains("success-popup")){
         sendMsgPopup.close();
+        successMsg.close();
     }
     
 });
@@ -206,4 +244,8 @@ closeBtn.addEventListener('click', sendMsgPopup.close.bind(sendMsgPopup));
 
     //Validate form before sending
 
-let sendMsg = new FormSend(sendMsgForm, sendMsgBtn, sendMsgFields, sendMsgText);
+const sendMsg = new FormSend(sendMsgForm, sendMsgBtn, sendMsgFields, sendMsgText);
+
+const successMsg = new PopupSuccess(successPopup, bg, successPopupOkBtn)
+
+
