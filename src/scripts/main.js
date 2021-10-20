@@ -59,7 +59,7 @@ class Popup {
 
 }
 
-
+// Additional class for success popup that closes it on OK button
 class PopupSuccess extends Popup {
     constructor (popup, bg, btn) {
         super(popup, bg, btn);
@@ -92,20 +92,8 @@ class FormSend{
                 setTimeout(()=> {successMsg.show()}, 500);
 
             }
-        })
+        });
     }
-
-
-
-
-        // Success alert if fields filled and message sent
-        success() {
-            const successAlert = document.createElement('div');
-            successAlert.classList.add('_success');
-            successAlert.innerHTML = "Your message has been sent successfully!";
-            this.form.append(successAlert);
-        }
-
 
 
         //Sending form fields in json format to backend
@@ -139,6 +127,9 @@ class FormSend{
         }
     }
 
+    //Class for form validation, 
+    // fields - input fields of form NodeList (text, name, telephone, etc.)
+    // text   - text from textarea of form
     class FormValidate {
         constructor(fields, text) {
             this.fields = fields;
@@ -147,21 +138,19 @@ class FormSend{
 
         validate(fields, text) {
 
+            //Removing old error messages
             const oldErr = document.querySelector('._err');
             if(oldErr) {
                 oldErr.remove();
             }
 
-            const oldSucc = document.querySelector('._success');
-            if(oldSucc) {
-                oldSucc.remove();
-            }
 
             this.text.classList.remove('_req');
             for(let i = 0; i < this.fields.length; i++) {
                 this.fields[i].classList.remove('_req');
             }
             
+            //Either empty fields or email error type
             let errType = '';
 
             for(let i=0; i<this.fields.length; i++) {
@@ -197,7 +186,7 @@ class FormSend{
         }
 
         
-        // Error alert if form has empty fields
+        // Error alert if form has empty fields or invalid email
         err(errType) {
 
             if(errType === 'emailErr') {
@@ -216,6 +205,7 @@ class FormSend{
 
         }
 
+        //Regular expression for email validation
         validateEmail(email) {
             var re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
             return re.test(email);
