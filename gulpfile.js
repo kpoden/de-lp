@@ -70,7 +70,7 @@ gulp.task('styles:build', function(){
         .pipe(sourcemaps.init())
         .pipe(plumber())
         .pipe(sass())
-        .pipe(autoprefixer())
+        .pipe(autoprefixer(['last 2 versions']))
         .pipe(stripComments())
         .pipe(beutify())
         .pipe(sourcemaps.write())

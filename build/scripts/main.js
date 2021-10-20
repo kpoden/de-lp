@@ -171,7 +171,7 @@ class FormSend{
                 }
                 if(this.fields[i].id === "email") {
                    
-                    if(!this.validateEmail(this.fields[i].value)) {
+                    if(!this.validateEmail(this.fields[i].value.trim())) {
                         this.fields[i].classList.add('_req');
                         errType = 'emailErr';
                     }
